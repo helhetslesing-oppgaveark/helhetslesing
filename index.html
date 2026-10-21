@@ -1,0 +1,616 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Planlegg en økt i Helhetslesing</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+:root{--bg:#eef1f6;--card:#fff;--ink:#1b2433;--mute:#586277;--line:#cdd4e2;--acc:#3a4fa3;--acc-ink:#fff;--hi:#f6d776;--hi-ink:#2b2200;--soft:#e4e9f6;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10141d;--card:#192031;--ink:#e8ecf6;--mute:#a1abc2;--line:#2f3a54;--acc:#8fa4f2;--acc-ink:#10141d;--hi:#a8861c;--hi-ink:#fff;--soft:#222c45}}
+:root[data-theme="dark"]{--bg:#10141d;--card:#192031;--ink:#e8ecf6;--mute:#a1abc2;--line:#2f3a54;--acc:#8fa4f2;--acc-ink:#10141d;--hi:#a8861c;--hi-ink:#fff;--soft:#222c45}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 "Atkinson Hyperlegible",Verdana,system-ui,sans-serif}
+.wrap{max-width:900px;margin:auto;padding:20px 16px 48px}
+header{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap;margin-bottom:14px}
+h1{font-size:1.6rem;margin:0}
+header p{margin:2px 0 0;color:var(--mute);font-size:.95rem;max-width:56ch}
+h2{font-size:1.3rem;margin:0 0 4px}
+h3{font-size:1.05rem;margin:22px 0 6px}
+.lead{color:var(--mute);margin:0 0 14px}
+nav{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:10px}
+nav button{flex:1 0 auto;background:var(--card);border:1px solid var(--line);color:var(--ink);padding:9px 14px;border-radius:8px;font:inherit;font-size:.92rem;cursor:pointer;text-align:left}
+nav button b{display:block;font-size:.8rem;color:var(--mute);font-weight:400}
+nav button[aria-current=true]{background:var(--acc);color:var(--acc-ink);border-color:var(--acc)}
+nav button[aria-current=true] b{color:inherit}
+.step{display:none;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px}
+.step.on{display:block}
+textarea,input[type=text],input[type=number],select{width:100%;font:inherit;padding:9px 11px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+textarea{min-height:90px;resize:vertical}
+#txt{min-height:170px}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+button.p{background:var(--acc);color:var(--acc-ink);border:0;border-radius:8px;padding:9px 16px;font:inherit;font-weight:700;cursor:pointer}
+button.s{background:none;border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:8px 14px;font:inherit;cursor:pointer}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:10px 0}
+.stat{background:var(--soft);border-radius:8px;padding:8px 12px;font-size:.92rem}
+.chips{display:flex;flex-wrap:wrap;gap:6px;max-height:210px;overflow:auto;padding:4px 0}
+.chip{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:20px;padding:2px 11px;font:inherit;font-size:.92rem;cursor:pointer}
+.chip[aria-pressed=true]{background:var(--hi);color:var(--hi-ink);border-color:var(--hi)}
+ul.c{list-style:none;padding:0;margin:6px 0}
+ul.c li{padding:7px 0;border-top:1px solid var(--line)}
+ul.c label{display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+ul.c input{margin-top:6px;width:18px;height:18px;accent-color:var(--acc)}
+.act{background:var(--soft);border-radius:8px;padding:10px 14px;margin:8px 0}
+.act b{display:block}
+.read{font-size:1.05rem;line-height:1.7;background:var(--bg);border-radius:8px;padding:14px 16px;white-space:pre-wrap}
+table{width:100%;border-collapse:collapse;margin:8px 0}
+th,td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+th{background:var(--soft);font-size:.9rem}
+td input[type=text]{padding:4px 8px}
+.pz{font-size:1.2rem;line-height:2.5}
+.pz .w{display:inline-flex;margin-right:14px;white-space:nowrap}
+.pz .b{border:1px dashed var(--mute);padding:0 8px;margin-right:2px}
+.nav2{display:flex;justify-content:space-between;margin-top:26px;gap:10px}
+.note{font-size:.9rem;color:var(--mute)}
+.empty{color:var(--mute);font-style:italic}
+.pr{display:none}
+#obs{min-height:340px}
+#s1 ul.c{list-style:disc;padding-left:1.3em}
+#s1 ul.c li{border-top:0;padding:3px 0}
+#s2{--card:#e6f4ea;--line:#8fcf9f;--soft:#c8e8d1;--acc:#1b7a3a;--acc-ink:#fff}
+#s2 h2,#s2 h3{color:#14532d}
+summary{cursor:pointer;font-weight:700;margin:14px 0 6px}
+#elevark{margin-top:22px;padding-top:4px;border-top:2px dashed var(--line)}
+@media print{#elevark{break-before:page;border:0}}
+.tk{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:12px 0;break-inside:avoid}
+.tk h4{margin:0 0 6px;font-size:1.05rem}
+.tk p{margin:0 0 8px}
+.tk td{height:34px}
+.sil{display:inline-flex;margin:4px 14px 8px 0;align-items:flex-start}
+.sil i{display:block;width:20px;border:2px solid var(--mute);margin-right:2px}
+.lt{display:inline-block;border:2px solid var(--mute);width:34px;text-align:center;margin:2px;font-weight:700}
+.sp{display:inline-block;border:1px dashed var(--mute);padding:0 8px;margin:3px}
+#printarea{display:none}
+@media print{body.pm .wrap{display:none}body.pm #printarea{display:block}}
+#elev .chip[aria-pressed=false]{text-decoration:line-through;opacity:.55}
+.pg{border:5px solid #f2b705;background:#fff;color:#1b2433;padding:22px 26px;margin:16px 0;break-after:page}
+.pg:last-child{break-after:auto}
+.pg h4{font-size:1.5rem;margin:0 0 12px}
+.pg p{margin:0 0 12px}
+.pg .note{color:#586277}
+.rd{color:#8a6500;font-size:1.05rem}
+.bxs i{display:inline-block;width:30px;height:30px;border:3px solid #f2b705;margin-left:8px;vertical-align:middle}
+.tx{white-space:pre-wrap;font-size:1.15rem;line-height:1.9}
+.al{border:2px solid #333;padding:10px 16px;margin:10px 0 18px;font-size:1.4rem;letter-spacing:.2em;line-height:1.6;max-width:560px}
+.al .v{color:#d62828;font-weight:700}
+.al .k{color:#1f6fd1;font-weight:700}
+.gt{width:100%;border-collapse:collapse}
+.gt th{background:#ffd23f;color:#2b1d00;font-weight:700;padding:8px;border:2px solid #333;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.gt td{border:2px solid #333;padding:6px 10px;height:62px}
+.br{margin:12px 0 20px}
+.br span{display:inline-block;border:2px solid #f2b705;padding:6px 14px;margin:0 8px 8px 0;font-size:1.9rem}
+.bx2{border:2px solid #f2b705;height:120px;font-size:1.8rem;font-weight:700;padding:8px 12px;margin-bottom:18px}
+.bx{border:3px solid #f2b705;padding:20px 24px;font-size:1.9rem;line-height:2.1;margin-bottom:16px}
+.ln{border-bottom:2px solid #333;height:58px}
+.pg .sil{zoom:1.7}
+.wb{margin-top:18px;font-size:1.2rem;line-height:1.6}
+.gr{border-collapse:collapse;table-layout:fixed}
+.gr td,.gr th{border:1px solid #333;width:24px;height:30px;text-align:center;padding:0;font-weight:700}
+.gr th.v{color:#d62828}
+.gr th.k{color:#1f6fd1}
+.pg ul{font-size:1.1rem;line-height:1.6}
+.lr{display:flex;gap:8px;margin:6px 0;align-items:center}
+.lr input{margin:0}
+#s3 ul.c{list-style:disc;padding-left:1.3em}
+#s3 ul.c li{border-top:0;padding:3px 0}
+#s3{--card:#f0e8fa;--line:#c4a8e6;--soft:#e0d0f5;--acc:#6d3fb2;--acc-ink:#fff}
+#s3 h2,#s3 h3{color:#4a2480}
+#s3 textarea,#s3 input[type=text]{background:#faf6ff;color:#1b2433}
+nav button[data-i="3"][aria-current=true]{background:#7a4cc2;border-color:#7a4cc2;color:#fff}
+#s4{--card:#fff6d6;--line:#f2c14e;--soft:#ffe28a;--acc:#d9620b;--acc-ink:#fff;--hi:#ffd23f;--hi-ink:#2b1500}
+#s4 h2,#s4 h3{color:#a8480a}
+#s4 textarea,#s4 input{background:#fffdf3;color:#1b2433}
+nav button[data-i="4"][aria-current=true]{background:#d9620b;border-color:#d9620b;color:#fff}
+@media screen{#s4{background:var(--card);border-color:var(--line);border-top:6px solid #f28c1e}}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #s4{--card:#2e2410;--line:#7a5a14;--soft:#4a3810;--acc:#ffb347;--acc-ink:#2b1500;--hi:#f0b429;--hi-ink:#1f1500}:root:not([data-theme="light"]) #s4 h2,:root:not([data-theme="light"]) #s4 h3{color:#ffb347}:root:not([data-theme="light"]) #s4 textarea,:root:not([data-theme="light"]) #s4 input{background:#1f1a0b;color:#f3ead2}}
+@media screen{#s3{background:var(--card);border-color:var(--line);border-top:6px solid #9b6fdc}}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #s3{--card:#251a38;--line:#5a3f87;--soft:#352650;--acc:#b794ee;--acc-ink:#1a1028}:root:not([data-theme="light"]) #s3 h2,:root:not([data-theme="light"]) #s3 h3{color:#c9aef2}:root:not([data-theme="light"]) #s3 textarea,:root:not([data-theme="light"]) #s3 input[type=text]{background:#1a1228;color:#eee6fa}}
+#s2 .chip{background:#f6fcf8;color:#1b2433}
+#s2 .chip[aria-pressed=true]{background:#7fd69a;border-color:#2e8b4f;color:#0d3a1f}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #s2 .chip{background:#0e1e15;color:#e2f3e8}:root:not([data-theme="light"]) #s2 .chip[aria-pressed=true]{background:#2f7a4c;border-color:#6fcf92;color:#fff}}
+#s2 select,#s2 textarea,#s2 input[type=text]{background:#f6fcf8;color:#1b2433}
+#s2 .act{color:#10241a}
+nav button[data-i="2"][aria-current=true]{background:#2e8b4f;border-color:#2e8b4f;color:#fff}
+@media screen{#s2{background:var(--card);border-color:var(--line);border-top:6px solid #43a965}}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #s2{--card:#13281c;--line:#2f6a45;--soft:#1c3b29;--acc:#6fcf92;--acc-ink:#0a1a10}:root:not([data-theme="light"]) #s2 h2,:root:not([data-theme="light"]) #s2 h3{color:#8fd9a8}:root:not([data-theme="light"]) #s2 select,:root:not([data-theme="light"]) #s2 textarea,:root:not([data-theme="light"]) #s2 input[type=text]{background:#0e1e15;color:#e2f3e8}:root:not([data-theme="light"]) #s2 .act{color:#e2f3e8}}
+@media print{.step+.step{break-before:page}#obs{min-height:9cm}}
+#s0{--card:#fff6d6;--line:#f2c14e;--soft:#ffe28a;--acc:#d9620b;--acc-ink:#fff;--hi:#ffd23f;--hi-ink:#2b1500}
+#s0 h2,#s0 h3{color:#a8480a}
+#s0 textarea,#s0 input{background:#fffdf3;color:#1b2433}
+#s0 .chip{background:#fffdf3;color:#1b2433}
+#s0 .chip[aria-pressed=true]{background:var(--hi);border-color:#e8a317;color:var(--hi-ink)}
+#s0 .stat{background:var(--soft);color:#3a2200}
+nav button[data-i="0"][aria-current=true]{background:#d9620b;border-color:#d9620b;color:#fff}
+@media screen{#s0{background:var(--card);border-color:var(--line);border-top:6px solid #f28c1e}}
+#s1{--card:#e3f2fd;--line:#90caf9;--soft:#bbdefb;--acc:#1565c0;--acc-ink:#fff}
+#s1 h2,#s1 h3{color:#0d47a1}
+#s1 textarea,#s1 input[type=text]{background:#f7fbff;color:#1b2433}
+#s1 .act{color:#10243b}
+nav button[data-i="1"][aria-current=true]{background:#1976d2;border-color:#1976d2;color:#fff}
+@media screen{#s1{background:var(--card);border-color:var(--line);border-top:6px solid #42a5f5}#s1 .read{background:#f7fbff;color:#1b2433}}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #s1{--card:#14283d;--line:#2f5d8a;--soft:#1d3b5c;--acc:#7fbcf5;--acc-ink:#0b1a2b}:root:not([data-theme="light"]) #s1 h2,:root:not([data-theme="light"]) #s1 h3{color:#90caf9}:root:not([data-theme="light"]) #s1 textarea,:root:not([data-theme="light"]) #s1 .read{background:#0e1c2c;color:#e3eefa}:root:not([data-theme="light"]) #s1 .act{color:#e3eefa}}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #s0{--card:#2e2410;--line:#7a5a14;--soft:#4a3810;--acc:#ffb347;--acc-ink:#2b1500;--hi:#f0b429;--hi-ink:#1f1500}:root:not([data-theme="light"]) #s0 h2,:root:not([data-theme="light"]) #s0 h3{color:#ffb347}:root:not([data-theme="light"]) #s0 textarea,:root:not([data-theme="light"]) #s0 input,:root:not([data-theme="light"]) #s0 .chip{background:#1f1a0b;color:#f3ead2}:root:not([data-theme="light"]) #s0 .stat{color:#f3ead2}}
+@media print{body{background:#fff;color:#000;font-size:13pt}header p,nav,.nav2,.noprint,button{display:none!important}.step{display:block!important;border:0;padding:0 0 18px;page-break-inside:auto;background:#fff}.wrap{padding:0}.chips{max-height:none}.pr{display:block}.act,.stat,.read{background:#fff;border:1px solid #999}th{background:#eee}textarea{border:1px solid #999;min-height:60px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<div><h1>Planlegg en økt i Helhetslesing</h1><p>Én arbeidsøkt i tre faser, med logg. Fyll inn teksten og gå gjennom stegene.</p></div>
+<div style="text-align:right"><button class="p" id="pall">Skriv ut hele økten</button> <button class="p" id="pfa">Skriv ut lærerark</button><div class="note" style="margin-top:6px"><b>Format:</b> <label style="display:inline;margin:0"><input type="radio" name="fmt" value="pdf" checked> PDF</label> &nbsp; <label style="display:inline;margin:0"><input type="radio" name="fmt" value="word"> Word-fil</label></div><div class="note" id="hnote" style="font-size:.8rem;margin-top:3px">Velg «Lagre som PDF» som skriver.</div></div>
+</header>
+<nav id="nav"></nav>
+
+<section class="step on" id="s0">
+<h2>Tekst</h2>
+<p class="lead">Velg en fagtekst, eller en tekst som er meningsfull for eleven. Ikke skriv inn elevens navn.</p>
+<textarea id="txt" placeholder="Lim inn eller skriv teksten her."></textarea>
+<div class="row"><button class="p noprint" id="auto" style="padding:12px 22px;font-size:1.05rem">Marker lange ord</button><button class="s noprint" id="clr" style="padding:10px 20px;font-size:1.05rem;font-weight:700;border:2px solid var(--acc);color:var(--acc)">Fjern markeringer</button></div>
+<div class="row noprint" style="align-items:flex-end"><label style="flex:1;min-width:200px">Skriv inn ord som skal brukes i oppgaven<input type="text" id="addw" placeholder="Skriv ett ord fra teksten" autocomplete="off"></label><button class="p" id="addb">Legg til ord i oppgave</button></div>
+<p class="note noprint" id="addmsg" role="status"></p>
+<p class="note" style="margin-bottom:0">Ord i oppgaven (trykk på et ord for å fjerne det):</p>
+<div class="chips" id="added"><span class="empty">Ingen ord lagt til ennå.</span></div>
+<div id="chips" style="display:none"></div>
+</section>
+
+<section class="step" id="s1">
+<h2>Fase A: arbeid med helhet</h2>
+<p class="lead">Mål: eleven forstår innholdet og får en første lesing med støtte. Du kartlegger hvilke ord som er vanskelig for eleven å lese.</p>
+<h3>Før lesing</h3>
+<ul class="c">
+<li>Samtale om emnet: «Hva kan jeg fra før om dette? Hva vil jeg lære?»</li>
+<li>Bilder, tegninger eller konkreter som støtte til forståelsen</li>
+<li>Ord og begreper som er nye, forklares før lesing</li>
+</ul>
+<h3>Lesing med støtte</h3>
+<ul class="c">
+<li>Læreren leser teksten høyt i et rolig tempo</li>
+<li>Eleven leser sammenhengende, med støtte når det trengs</li>
+<li>Marker lesefeil mens eleven leser. Bruk samme farge ved første lesing.</li>
+</ul>
+<h3>Eleven leser og du noterer elevens lesefeil</h3>
+<div class="read" id="read"><span class="empty">Teksten vises her.</span></div>
+</section>
+
+<section class="step" id="s2">
+<h2>Fase B: arbeid med detaljene</h2>
+<p class="lead">Mål: eleven får bedre strategier for å lese ord. Velg oppgaver ut fra hvor lesingen har sporet av, og modeller først selv.</p>
+<label class="noprint">Hvor har lesingen sporet av?
+<select id="av">
+<option value="">Ikke kartlagt ennå</option>
+<option value="a">Avsporing 1: Ikke-alfabetiske lesere</option>
+<option value="k">Avsporing 2: Kompensatoriske lesere</option>
+<option value="n">Avsporing 3: Ikke-automatiske / langsomme lesere</option>
+<option value="f">Avsporing 4: Forsinkede lesere</option>
+<option value="s">Avsporing 5: Suboptimale lesere</option>
+</select></label>
+<div id="rec"></div>
+<h3>Oppgaver i denne økten</h3>
+<div id="chosen"></div>
+<div id="elevark"><h3>Oppgaver til eleven</h3><div class="row noprint"><button class="p" id="pe">Skriv ut elevark</button><button class="p" id="pfa2">Skriv ut lærerark</button><span class="note" id="prmsg" role="status"></span></div><div id="elev"></div></div>
+</section>
+
+<section class="step" id="s3">
+<h2>Fase C: arbeid med helhet</h2>
+<p class="lead">Mål: eleven leser teksten på nytt og bruker det som ble lært i fase B. Gi litt mindre støtte enn i fase A, og gi positive tilbakemeldinger.</p>
+<ul class="c">
+<li>Eleven leser samme tekst eller avsnitt som i fase A</li>
+<li>Påminnelser ved behov: se på stavelsene, se på hele setningen</li>
+<li>Si bare hva eleven leste bra nå. Ikke ta opp det som var vanskelig.</li>
+<li>Eleven sier først hva som var bedre enn ved første lesing. Deretter kommenterer de andre elevene det de la merke til, og til slutt læreren.</li>
+</ul>
+<div id="loggark"><h3>Elevlogg</h3><div class="row noprint"><button class="p" id="pll">Skriv ut elevlogg</button></div>
+<div id="lgedit" class="noprint"></div><div id="loggsheet"></div></div>
+</section>
+
+<section class="step" id="s4">
+<h2>Lærerlogg</h2>
+<p class="lead">Fyll ut lærerloggen rett etter økten. Noter planlagt og utført arbeid i stikkordsform, sammen med opplevelser og erfaringer. Reflekter over samspillet med eleven og hvordan eleven responderte på støtten du ga.</p>
+<div class="row noprint"><button class="p" id="plg">Skriv ut lærerlogg</button></div>
+<div id="lsheet"></div>
+</section>
+
+<div class="nav2"><button class="s" id="prev">Forrige</button><button class="p" id="next">Neste</button></div>
+<div class="note noprint" style="margin-top:28px;border-top:1px solid var(--line);padding-top:10px"><b>Kilder</b><ul style="margin:6px 0 0;padding-left:1.2em;font-size:.85rem;line-height:1.5"><li>Statped: <a href="https://www.statped.no/content/uploads/2025/05/spesialpedagogisk_leseopplaering.pdf" target="_blank" rel="noopener" style="color:var(--acc)">«Spesialpedagogisk leseopplæring – en veileder»</a>.</li><li>Fagteam for inkluderende lese- og skriveopplæring / Oslo PPT (juni 2024): «Leseutviklingsmodell med avsporinger og forslag til tiltak – med utgangspunkt i helhetslesing».</li><li>Materialet bygger blant annet på Spear-Swerling og Sternberg (1998), Frost (2003), «Prinsipper for god leseopplæring», og Hagtvedt, Frost og Refsahl (2015), «Den intensive leseopplæringen».</li></ul></div>
+</div>
+<div id="printarea"></div>
+<script>
+const $=id=>document.getElementById(id);
+const NAMES=[["Tekst","Velg og vurder"],["Fase A","Helhet"],["Fase B","Detaljer"],["Fase C","Helhet igjen"],["Lærerlogg","Refleksjon"]];
+let cur=0,marked=new Set(),ov={};
+const nav=$("nav");
+nav.innerHTML=NAMES.map((n,i)=>`<button data-i="${i}">${n[0]}<b>${n[1]}</b></button>`).join("");
+function go(i){cur=Math.max(0,Math.min(4,i));document.querySelectorAll(".step").forEach((s,k)=>s.classList.toggle("on",k===cur));nav.querySelectorAll("button").forEach((b,k)=>b.setAttribute("aria-current",k===cur));$("prev").style.visibility=cur?"visible":"hidden";$("next").style.visibility=cur<4?"visible":"hidden";scrollTo(0,0)}
+nav.onclick=e=>{const b=e.target.closest("button");if(b)go(+b.dataset.i)};
+$("prev").onclick=()=>go(cur-1);$("next").onclick=()=>go(cur+1);
+
+const KJ=/(ai|ei|au|øy|[aeiouyæøå])/i,UN=/(skj|sj|kj|gj|hj)$/i;
+function syl(w){
+const p=w.split(KJ),out=[];let nå=p[0];
+for(let i=1;i<p.length;i+=2){nå+=p[i];const k=p[i+1]||"";
+if(i+2>=p.length){nå+=k;continue}
+let stay="",next=k;const t=k.match(UN);
+if(t&&k.length>t[0].length){stay=k.slice(0,-t[0].length);next=t[0]}
+else if(!t&&k.length>1){stay=k[0];next=k.slice(1)}
+out.push(nå+stay);nå=next}
+out.push(nå);return out}
+function parts(tok){const key=tok.toLowerCase();if(ov[key]){let a=ov[key].split("-").filter(Boolean);if(tok[0]!==key[0]&&a.length)a[0]=a[0][0].toUpperCase()+a[0].slice(1);return a}return syl(tok)}
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const all=()=>($("txt").value.match(/\p{L}+/gu)||[]);
+const uniq=()=>[...new Set(all().map(w=>w.toLowerCase()))].sort((a,b)=>a.localeCompare(b,"nb"));
+
+function text(){
+const t=$("txt").value,n=all().length;
+$("chips").innerHTML=n?uniq().map(w=>`<button class="chip" data-w="${esc(w)}" aria-pressed="${marked.has(w)}">${esc(w)}</button>`).join(""):'<span class="empty">Skriv inn en tekst først.</span>';
+$("read").innerHTML=n?esc(t):'<span class="empty">Teksten vises her.</span>';
+detaljer()}
+function fit(){const u=$("unk").value;if(u==="")return $("fit").textContent="Skriv inn antall for en vurdering.";
+const k=100-Math.min(100,+u);let m;
+if(k>=95)m="Passer til gjentatt lesing og fri lesing (fase C).";
+else if(k>=85)m="Litt for lett til første lesing og litt for vanskelig til gjentatt lesing.";
+else if(k>=75)m="Passer til første lesing med støtte (fase A).";
+else m="Trolig for vanskelig. Velg en lettere tekst, eller forenkle den.";
+$("fit").textContent=`Ca. ${k} % kjente ord. ${m}`}
+
+const REC={
+a:["Lydlek med bilder: finn ord med felles første lyd, siste lyd eller vokal, og lek med rim","Legg ord med bokstavbrikker og skriv dem etterpå","Bruk få bokstaver om gangen og lag mange ord av dem","Skille bokstavnavn fra bokstavlyd, og artikulatorisk støtte om nødvendig"],
+k:["Silhuettoppgaver: sett ord inn i omriss av bokstavene","Lydanalyse og lydsyntese av korte ord fra teksten","Stavelsesarbeid med enkle to-stavelsesord","Ikke-lydrette småord (jeg, det, hva) og vanlige konsonantgrupper","Ordanalyseskjema"],
+n:["Stavelsesdeling med enkle regler, markert med vokaler","Brikkestaving av vanskelige ord","Puslehistorie og hentediktat","Morfemarbeid: røtter, forstavelser og endelser","Gjentatt lesing av tekster på ca. 95 % nivå"]};
+const AVN={a:"Ikke-alfabetisk",k:"Kompensatorisk",n:"Ikke automatisert"};
+function rec(){const v=$("av").value;
+$("rec").innerHTML=v?`<h3>Forslag: ${AVN[v]}</h3>`+REC[v].map(r=>`<div class="act">${r}</div>`).join("")+'<p class="note">Veilederen har flere detaljer og eksempler per gruppe. Tilpass alltid til eleven.</p>':'<p class="note">Kartlegg først hvor lesingen har sporet av. Velg deretter en gruppe for forslag til oppgaver.</p>'}
+function detaljer(){
+renderAdded();elev();
+const ws=[...marked].filter(w=>uniq().includes(w));
+$("syl").innerHTML=ws.length?`<table><tr><th>Ord</th><th>Stavelser (bruk bindestrek)</th></tr>${ws.map(w=>`<tr><td>${esc(w)}</td><td><input type="text" data-o="${esc(w)}" value="${esc(ov[w]||syl(w).join("-"))}" aria-label="Stavelser i ${esc(w)}"></td></tr>`).join("")}</table>`:'<p class="empty">Marker vanskelige ord under «Tekst» for å få dem her.</p>';
+$("oa").innerHTML=ws.length?`<table><tr><th>A: skrives som det sies</th><th>B: skrives annerledes</th><th>C: hva var vanskelig?</th></tr>${ws.map(w=>`<tr><td>${esc(w)}</td><td></td><td></td></tr>`).join("")}</table>`:'<p class="empty">Ingen markerte ord ennå.</p>';
+pz()}
+function pz(){const t=$("txt").value;if(!all().length)return $("pz").innerHTML='<span class="empty">Skriv inn en tekst først.</span>';
+$("pz").innerHTML=t.replace(/(\p{L}+)|([^\p{L}]+)/gu,(m,w,o)=>w?`<span class="w">${parts(w).map(p=>`<span class="b">${esc(p)}</span>`).join("")}</span>`:esc(o).replace(/\n/g,"<br>"))}
+
+$("txt").oninput=()=>{text()};
+
+$("av").onchange=rec;
+$("chips").onclick=e=>{const b=e.target.closest(".chip");if(!b)return;const w=b.dataset.w;marked.has(w)?marked.delete(w):marked.add(w);b.setAttribute("aria-pressed",marked.has(w));detaljer()};
+$("auto").onclick=()=>{uniq().forEach(w=>{if(syl(w).length>=3)marked.add(w)});text()};
+$("clr").onclick=()=>{marked.clear();text()};
+
+let base="",hist=[],lvl=0,busy=false;
+function resetSimp(){base=$("txt").value;hist=[];lvl=0;simpUi()}
+function simpUi(){$("undo").disabled=!hist.length||busy;$("orig").disabled=!hist.length||busy;$("simp").disabled=busy;$("simpst").textContent=lvl?`Nivå ${lvl} (enklere)`:"Nivå 0 (original)"}
+async function simplify(){
+const t=$("txt").value.trim(),m=$("simpmsg");
+if(!t){m.textContent="Skriv eller lim inn en tekst først.";return}
+const sample=await claude.use("sample");
+if(!sample){m.textContent="Denne funksjonen er ikke tilgjengelig i denne visningen.";return}
+if(!lvl)base=t;
+busy=true;simpUi();m.textContent="Gjør teksten enklere ...";
+try{
+const r=await sample(`Du hjelper lærere som lager lesetekster til elever som strever med lesing.\n\nOPPGAVE: Skriv om NÅVÆRENDE VERSJON slik at den blir merkbart enklere å lese. Dette er forenklingsrunde nummer ${lvl+1}.\n\nREGLER:\n- Bruk kortere og vanligere ord, helst med én eller to stavelser. Bytt ut vanskelige ord og fremmedord med enkle ord. Må et fagord bli stående, forklar det kort med enkle ord.\n- Bruk korte setninger, helst under ti ord, med én tanke i hver setning og aktiv form.\n- Bevar alt innhold: alle fakta, personer, steder, tall og rekkefølgen fra ORIGINALEN skal være med. Ikke legg til nye opplysninger, og ikke fjern noe.\n- Skriv bokmål. Behold avsnittene. Ikke skriv overskrifter, forklaringer eller kommentarer.\n- Er teksten allerede veldig enkel, gjør bare små forbedringer.\n- Svar kun med den nye teksten.\n\nORIGINAL:\n${base}\n\nNÅVÆRENDE VERSJON:\n${t}`,{cache:false});
+const out=(r.text||"").trim();
+if(!out||r.truncated){m.textContent="Svaret ble ikke fullstendig. Prøv igjen, eventuelt med en kortere tekst.";busy=false;simpUi();return}
+hist.push(t);lvl++;$("txt").value=out;text();
+m.textContent="Teksten er gjort enklere. Les gjennom og sjekk at innholdet stemmer.";
+}catch(e){m.textContent=e&&e.code==="rate_limited"?"For mange forespørsler. Vent litt og prøv igjen.":e&&e.code==="not_granted"?"Du må gi tillatelse for å bruke denne funksjonen.":"Noe gikk galt. Prøv igjen."}
+busy=false;simpUi()}
+function renderAdded(){const ws=[...marked].filter(w=>uniq().includes(w));$("added").innerHTML=ws.length?ws.map(w=>`<button class="chip" data-r="${esc(w)}" aria-pressed="true" title="Fjern ordet">${esc(w)} ×</button>`).join(""):'<span class="empty">Ingen ord lagt til ennå.</span>'}
+function addWord(){const m=$("addmsg"),inp=$("addw"),toks=inp.value.match(/\p{L}+/gu)||[];
+if(!toks.length){m.textContent="Skriv inn et ord først.";inp.focus();return}
+const have=uniq(),ok=[],miss=[];
+toks.map(w=>w.toLowerCase()).forEach(w=>have.includes(w)?ok.push(w):miss.push(w));
+ok.forEach(w=>marked.add(w));
+m.textContent=(ok.length?`Lagt til i oppgaven: ${ok.join(", ")}. Ordene er med i fase B. `:"")+(miss.length?`Finner ikke i teksten: ${miss.join(", ")}.`:"");
+if(!miss.length)inp.value="";
+text();inp.focus()}
+$("addb").onclick=addWord;
+$("addw").onkeydown=e=>{if(e.key==="Enter")addWord()};
+$("added").onclick=e=>{const b=e.target.closest("[data-r]");if(b){marked.delete(b.dataset.r);text()}};
+
+
+
+const LV={
+a:{t:"Avsporing 1: Ikke-alfabetiske lesere",k:["Svak fonologisk bevissthet","Fortsetter å lese ved hjelp av visuelle holdepunkter","Har ikke forstått at bokstavene er «bærere» av en lyd","Vanskeligheter med å lytte ut første lyd","Prøver å huske utenat"],m:["Styrke fonologisk bevissthet","Innarbeide sikker kunnskap om bokstav-lyd"],o:["Rim og regler","Språkleker","Finne felles førstelyd","Sortere bilder med aktuelle lyder","Bruk av bokstavkort","Utforskende skriving","Silhuetter","Tastatur med lydstøtte"]},
+k:{t:"Avsporing 2: Kompensatoriske lesere",k:["Forstår koblingen mellom lyd og bokstav, men har svake fonologiske ferdigheter","Blander bokstaver","Bytter på lydenes plass","Utfordringer med å skille vokaler","Utfordringer med konsonantkombinasjoner","Utfordring med leseretning","Leser første lyd/lyder og gjetter på resten","Utfordring med rettskrivning","Varierende lesetempo"],m:["Bli tryggere på bokstav-lyd","Få sikker kunnskap om vokaler og konsonanter","Lære stavelsesdeling og stavelseslesing","Lære vanlige stavemønstre i korte ord med konsonantopphopninger (sti, tre, fri osv.)"],o:["Stavelsesdeling","Silhuetter","Brikkestaving","Gitter","Puslehistorie","Hentediktat"]},
+n:{t:"Avsporing 3: Ikke-automatiske / langsomme lesere",k:["Nøyaktig, men anstrengt lesing","Bruker lang tid på nye ord","Lange og vanskelige ord kan leses feil","Bruker tid på kompliserte konsonantkombinasjoner","Støtter seg til kontekst","Svak forståelse","Lav progresjon","Langsom og mangler flyt"],m:["Økt ortografisk kunnskap","Sikrere og mer nøyaktig lesing","Økende forståelse"],o:["Stavelseslesing","Brikkestaving","Puslehistorie","Setningspuslespill","Silhuetter med vanskelige stavemønstre","Morfemarbeid","Sammensatte ord","Bøyingsformer, forstavelser og endelser","Ord i ord","Hentediktat"]},
+f:{t:"Avsporing 4: Forsinkede lesere",k:["Ofte på mellomtrinnet","Har lært noen gode strategier, men ikke så avanserte som normalleseren","Har ofte lest lite og har lite leseerfaring","Lave forventninger til egen lesing","Utfordringer med leseforståelse i fagtekster","Kan ha lav motivasjon","Strever med å uttrykke seg skriftlig"],m:["Raskere og sikrere (nøyaktig) lesing","Mestre å hente mening og kunnskap fra tekstene / økt leseforståelse"],o:["Arbeid med leseforståelse og ulike lesestrategier","Arbeid med ords betydning","Sammensatte ord","Setningspuslespill","Mengdelesing, trenger leseerfaring","Veiledet lesing","Arbeid med morfemer og syntaks","Bøyingsformer, forstavelser og endelser"]},
+s:{t:"Avsporing 5: Suboptimale lesere",k:["Rask ordgjenkjenning og noen strategier for forståelse, men svak strategisk forståelseslesing","Oppdages ofte sent i skoleløpet"],m:["Nøyaktig, rask og sikker lesing","Bruke ulike lesestrategier for kunnskapsinnhenting og leseopplevelse"],o:["Arbeid med leseforståelse og ulike lesestrategier"]}};
+const ORD=["a","k","n","f","s"];
+let chosen=new Set();
+const chip=n=>`<button class="chip" data-tk="${esc(n)}" aria-pressed="${chosen.has(n)}">${esc(n)}</button>`;
+const lst=a=>`<ul style="margin:4px 0;padding-left:1.2em">${a.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`;
+const grp=k=>`<p class="note" style="margin:10px 0 2px">${esc(LV[k].t)}</p><div class="chips">${LV[k].o.map(chip).join("")}</div>`;
+function rec(){const v=$("av").value;let h="";
+if(v){const L=LV[v];
+h+=`<p class="note noprint" style="margin-bottom:2px">Trykk for å legge til oppgaver for dette nivået:</p><div class="chips noprint">${L.o.map(chip).join("")}</div>`;
+h+=`<details class="noprint"><summary>Legg til oppgaver fra andre nivåer</summary>${ORD.filter(k=>k!==v).map(grp).join("")}</details>`}
+else h+=`<p class="note">Velg først hvor lesingen har sporet av, så får du forslag til mål og oppgaver. Du kan også se oppgaver fra alle nivåer.</p><details class="noprint"><summary>Se oppgaver fra alle nivåer</summary>${ORD.map(grp).join("")}</details>`;
+$("rec").innerHTML=h}
+function chosenUI(){elev();$("chosen").innerHTML=chosen.size?`<ul>${[...chosen].map(n=>`<li>${esc(n)} <button class="chip noprint" data-x="${esc(n)}" aria-label="Fjern ${esc(n)}">×</button></li>`).join("")}</ul>`:'<p class="empty">Ingen oppgaver valgt ennå. Trykk på oppgaver ovenfor for å legge dem til.</p>'}
+function sync(){document.querySelectorAll("#rec [data-tk]").forEach(b=>b.setAttribute("aria-pressed",chosen.has(b.dataset.tk)))}
+$("rec").onclick=e=>{const b=e.target.closest("[data-tk]");if(!b)return;const n=b.dataset.tk;chosen.has(n)?chosen.delete(n):chosen.add(n);sync();chosenUI()};
+$("chosen").onclick=e=>{const b=e.target.closest("[data-x]");if(b){chosen.delete(b.dataset.x);sync();chosenUI()}};
+const TBL={"Stavelsesdeling":["Del hvert ord i stavelser. Sett strek under vokalene og klapp stavelsene.",["Ord","Stavelser"]],"Brikkestaving":["Skriv hver stavelse på en lapp. Legg ordet med lappene. Snu lappene og skriv ordet.",["Ord","Stavelser","Skrevet etter diktat"]],"Ord i ord":["Hvor mange ord finner du inni hvert ord?",["Ord","Ordene jeg fant"]],"Morfemarbeid":["Del ordet i rot, forstavelse og endelse. Lag nye ord av roten.",["Ord","Delene","Nye ord"]],"Arbeid med morfemer og syntaks":["Del ordet i rot, forstavelse og endelse. Lag nye ord av roten.",["Ord","Delene","Nye ord"]],"Sammensatte ord":["Del ordet i mindre ord, eller lag nye sammensatte ord.",["Ord","Delene / nye ord"]],"Arbeid med ords betydning":["Skriv hva ordet betyr, og bruk det i en setning.",["Ord","Hva betyr det?","Setning"]],"Rim og regler":["Finn ord som rimer.",["Ord","Rimord"]],"Hentediktat":["Les ordet godt. Gå til et annet bord og skriv det du husker. Sjekk etterpå.",["Ord","Skrev jeg riktig?"]],"Utforskende skriving":["Læreren leser ordene opp. Skriv dem slik du hører dem.",["Nr.","Slik skrev jeg","Riktig skrivemåte"]]};
+const INS={"Språkleker":"Lek med ordene: lag rim, bytt første lyd og finn ord som starter likt.","Sortere bilder med aktuelle lyder":"Finn eller tegn bilder av ordene. Sorter dem etter første lyd.","Tastatur med lydstøtte":"Skriv ordene på et tastatur med lydstøtte. Lytt til lydene.","Arbeid med leseforståelse og ulike lesestrategier":"Les teksten. Hva handler den om? Hvilke ord var vanskelige, og hva betyr de?","Mengdelesing, trenger leseerfaring":"Les mye i tekster på ditt nivå. Skriv hvor mye du har lest.","Veiledet lesing":"Les sammen med læreren. Stopp ved ord du ikke kan, og snakk om dem."};
+const sw=a=>a.map(w=>`<span class="sp">${esc(w)}</span>`).join("");
+function sil(w){return `<span class="sil">${[...w].map(c=>{const a=/[bdfhkltBDFHKLTæøåÆØÅ]/.test(c),d=/[gjpqyGJPQY]/.test(c);return `<i style="margin-top:${a?0:14}px;height:${a||d?40:26}px"></i>`}).join("")}</span>`}
+function card(n,ws){
+if(TBL[n]){const[ins,c]=TBL[n];return `<p>${ins}</p><table><tr>${c.map(x=>`<th>${x}</th>`).join("")}</tr>${ws.map(w=>`<tr><td>${esc(w)}</td>${c.slice(1).map(()=>"<td></td>").join("")}</tr>`).join("")}</table>`}
+if(n==="Stavelseslesing")return `<p>Les hvert ord stavelse for stavelse. Les så hele ordet.</p>${ws.map(w=>`<span class="sp">${parts(w).map(esc).join(" – ")}</span>`).join("")}`;
+if(n==="Puslehistorie")return `<p>Klipp ut brikkene. Legg teksten sammen igjen, og les den høyt.</p><div class="pz">${pzh()}</div>`;
+if(n.startsWith("Silhuetter"))return `<p>Hvert ord passer i ett omriss. Skriv ordene i riktig omriss.</p><p>${sw([...ws].sort((a,b)=>a.localeCompare(b,"nb")))}</p>${[...ws].sort((a,b)=>b.length-a.length||b.localeCompare(a,"nb")).map(sil).join("")}`;
+if(n==="Gitter")return `<p>Skriv ett ord i hver rad. Sett v under vokalene og k under konsonantene.</p><table>${ws.map(w=>`<tr>${[...w].map(c=>`<td style="text-align:center">${esc(c)}</td>`).join("")}</tr><tr>${[...w].map(()=>"<td></td>").join("")}</tr>`).join("")}</table>`;
+if(n==="Setningspuslespill"){const ss=($("txt").value.match(/[^.!?]+[.!?]*/g)||[]).map(s=>s.trim()).filter(s=>s&&(s.match(/\p{L}+/gu)||[]).some(x=>ws.includes(x.toLowerCase()))).slice(0,4);return `<p>Klipp opp setningene. Legg dem på nytt. Lag flere setninger av de samme ordene.</p>`+(ss.length?ss.map(s=>`<p>${sw(s.split(/\s+/).sort((a,b)=>a.localeCompare(b,"nb")))}</p>`).join(""):'<p class="empty">Fant ingen setninger med ordene.</p>')}
+if(n==="Finne felles førstelyd")return `<p>Hvilke av ordene starter med samme lyd? Skriv dem sammen i grupper. Finn to ord til som starter likt.</p><p>${sw([...ws].sort((a,b)=>a.length-b.length||b.localeCompare(a,"nb")))}</p><p>____________________</p><p>____________________</p>`;
+if(n==="Bruk av bokstavkort")return `<p>Legg ordene med bokstavkort. Skriv ordet etterpå.</p>`+ws.map(w=>`<p>${[...w].sort().map(c=>`<span class="lt">${esc(c)}</span>`).join("")} → ____________</p>`).join("");
+return `<p>${INS[n]||"Arbeid med ordene sammen med læreren."}</p><p>${sw(ws)}</p>`}
+function elev(){const ws=[...marked].filter(w=>uniq().includes(w)),el=$("elev");
+if(!chosen.size){el.innerHTML='<p class="empty">Oppgavene du velger vises her som et ark eleven kan løse.</p>';return}
+el.innerHTML=`<p>Navn: ______________ &nbsp; Dato: __________</p>`+(ws.length?"":'<p class="note noprint">Marker vanskelige ord under «Tekst» eller legg dem til, så fylles oppgavene ut.</p>')+[...chosen].map((n,i)=>`<div class="tk"><h4>Oppgave ${i+1}: ${esc(n)}</h4>${card(n,ws)}</div>`).join("")}
+const pzh=()=>$("txt").value.replace(/(\p{L}+)|([^\p{L}]+)/gu,(m,w,o)=>w?`<span class="w">${parts(w).map(p=>`<span class="b">${esc(p)}</span>`).join("")}</span>`:esc(o).replace(/\n/g,"<br>"));
+function detaljer(){renderAdded();elev()}
+let skip={};
+const wsAll=()=>[...marked].filter(w=>uniq().includes(w));
+const wsFor=(n,all)=>all.filter(w=>!(skip[n]&&skip[n].has(w)));
+const VOW=/[aeiouyæøå]/i;
+const sents=ws=>($("txt").value.match(/[^.!?]+[.!?]*/g)||[]).map(s=>s.trim()).filter(s=>s&&(s.match(/\p{L}+/gu)||[]).some(x=>ws.includes(x.toLowerCase()))).slice(0,4);
+const ctx=w=>sents([w])[0]||"";
+const HINT={"Ord i ord":"Åpent svar. Elevene finner selv ord inni ordet. Sjekk at ordene finnes.","Morfemarbeid":"Åpent svar. Hjelp eleven å finne rot, forstavelse og endelse.","Arbeid med morfemer og syntaks":"Åpent svar. Hjelp eleven å finne rot, forstavelse og endelse.","Sammensatte ord":"Åpent svar. Sjekk at delene er egne ord.","Rim og regler":"Åpent svar. Sjekk at ordene rimer."};
+function card(n,ws,a){
+if(TBL[n]){const[ins,c]=TBL[n],u=n==="Utforskende skriving";
+const rows=ws.map((w,i)=>{let cells;
+if(!a)cells=c.slice(1).map(()=>"<td></td>");
+else if(n==="Stavelsesdeling")cells=[`<td>${parts(w).map(esc).join(" – ")}</td>`];
+else if(n==="Brikkestaving")cells=[`<td>${parts(w).map(esc).join(" – ")}</td>`,`<td>${esc(w)}</td>`];
+else if(n==="Hentediktat")cells=[`<td>Riktig: ${esc(w)}</td>`];
+else if(u)cells=["<td></td>",`<td>${esc(w)}</td>`];
+else{const h=n==="Arbeid med ords betydning"?(ctx(w)?"Åpent svar. I teksten: «"+ctx(w)+"»":"Åpent svar."):HINT[n];cells=[`<td colspan="${c.length-1}">${esc(h)}</td>`]}
+return `<tr><td>${u?(i+1)+".":esc(w)}</td>${cells.join("")}</tr>`}).join("");
+return `<p>${ins}</p><table><tr>${c.map(x=>`<th>${x}</th>`).join("")}</tr>${rows}</table>`}
+if(n==="Stavelseslesing")return `<p>Les hvert ord stavelse for stavelse. Les så hele ordet.</p>${ws.map(w=>`<span class="sp">${parts(w).map(esc).join(" – ")}</span>`).join("")}`+(a?'<p class="note">Ingen fasit: eleven leser høyt.</p>':"");
+if(n==="Puslehistorie")return `<p>Klipp ut brikkene. Legg teksten sammen igjen, og les den høyt.</p>`+(a?`<p>${esc($("txt").value)}</p>`:`<div class="pz">${pzh()}</div>`);
+if(n.startsWith("Silhuetter")){const bank=[...ws].sort((x,y)=>x.localeCompare(y,"nb")),ord=[...ws].sort((x,y)=>y.length-x.length||y.localeCompare(x,"nb"));return `<p>Hvert ord passer i ett omriss. Skriv ordene i riktig omriss.</p><p>${sw(bank)}</p>`+ord.map(w=>`<span style="display:inline-block;text-align:center">${sil(w)}${a?`<br>${esc(w)}`:""}</span>`).join("")}
+if(n==="Gitter")return `<p>Sett v under vokalene og k under konsonantene.</p><table>${ws.map(w=>`<tr>${[...w].map(c=>`<td style="text-align:center">${esc(c)}</td>`).join("")}</tr><tr>${[...w].map(c=>`<td style="text-align:center">${a?(VOW.test(c)?"v":"k"):""}</td>`).join("")}</tr>`).join("")}</table>`;
+if(n==="Setningspuslespill"){const ss=sents(ws).slice(0,2);return `<p>Klipp opp setningene. Legg dem på nytt. Lag flere setninger av de samme ordene.</p>`+(ss.length?ss.map(s=>`<p>${a?esc(s):sw(s.split(/\s+/).sort((x,y)=>x.localeCompare(y,"nb")))}</p>`).join(""):'<p class="empty">Fant ingen setninger med ordene.</p>')}
+if(n==="Finne felles førstelyd"){if(a){const g={};ws.forEach(w=>(g[w[0]]=g[w[0]]||[]).push(w));return `<p>Ord som starter likt (sjekk lyden, for eksempel sj, kj og skj):</p>`+Object.values(g).map(x=>`<p>${sw(x)}</p>`).join("")}return `<p>Hvilke av ordene starter med samme lyd? Skriv dem sammen i grupper. Finn to ord til som starter likt.</p><p>${sw([...ws].sort((x,y)=>x.length-y.length||y.localeCompare(x,"nb")))}</p><p>____________________</p><p>____________________</p>`}
+if(n==="Bruk av bokstavkort")return `<p>Legg ordene med bokstavkort. Skriv ordet etterpå.</p>`+ws.map(w=>`<p>${[...w].sort().map(c=>`<span class="lt">${esc(c)}</span>`).join("")} → ${a?esc(w):"____________"}</p>`).join("");
+return `<p>${INS[n]||"Arbeid med ordene sammen med læreren."}</p><p>${sw(ws)}</p>`+(a?'<p class="note">Ingen fasit: gjennomføres sammen med eleven.</p>':"")}
+const chips=(n,all)=>`<p class="note noprint" style="margin:0">Ord i oppgaven. Trykk for å fjerne eller legge tilbake:</p><div class="chips noprint">${all.map(w=>`<button class="chip" data-sk="${esc(n)}" data-sw="${esc(w)}" aria-pressed="${!(skip[n]&&skip[n].has(w))}">${esc(w)}</button>`).join("")}</div>`;
+function sheet(a,edit,title){if(!chosen.size)return"";const all=wsAll();
+return (title?`<h2>${a?"Lærerark med fasit":"Elevark"}</h2>`:"")+(a?'<p class="note">Fasit til elevarket. Åpne oppgaver må vurderes av læreren.</p>':`<p>Navn: ______________ &nbsp; Dato: __________</p>`)+[...chosen].map((n,i)=>`<div class="tk"><h4>Oppgave ${i+1}: ${esc(n)}</h4>${edit&&n!=="Puslehistorie"?chips(n,all):""}${card(n,wsFor(n,all),a)}</div>`).join("")}
+function elev(){const e=$("elev");
+if(!chosen.size){e.innerHTML='<p class="empty">Oppgavene du velger vises her som et ark eleven kan løse.</p>';$("loggsheet").innerHTML=logg();return}
+const w=wsAll().length?"":'<p class="note noprint">Legg til ord under «Tekst», så fylles oppgavene ut.</p>';
+e.innerHTML=w+sheet(false,true,false);$("loggsheet").innerHTML=logg()}
+$("elev").onclick=e=>{const b=e.target.closest("[data-sk]");if(!b)return;const n=b.dataset.sk,w=b.dataset.sw;skip[n]=skip[n]||new Set();skip[n].has(w)?skip[n].delete(w):skip[n].add(w);elev()};
+function pr(a){const m=$("prmsg");if(!chosen.size){m.textContent="Velg oppgaver først.";return}m.textContent="";output(sheet(a,false,true),"Elevark")}
+window.onafterprint=()=>{document.body.classList.remove("pm");$("printarea").innerHTML=""};
+$("pe").onclick=()=>pr(false);
+const pg=(t,b,ch)=>`<div class="pg">${ch||""}<h4>${esc(t)}</h4>${b}</div>`;
+function task(n,ws,ch){
+if(n==="Stavelsesdeling"){const k=Math.min(6,Math.max(3,...ws.map(w=>parts(w).length)));const al=[..."aeiouyæøå"].map(c=>`<span class="v">${c}</span>`).join(" ");
+return [pg("Prikk vokaler og finn stavelser",`<p>Finn vokalene i ordene. Prikk under vokalene. Del ordet i stavelser. Skriv stavelsene.</p><table class="gt"><tr><th>Prikk vokaler. Del i stavelser.</th>${Array.from({length:k},(_,i)=>`<th>${i+1}. stavelse</th>`).join("")}</tr>${ws.map(w=>`<tr><td>${esc(w)}</td>${"<td></td>".repeat(k)}</tr>`).join("")}</table>`,ch)]}
+if(n==="Brikkestaving")return [pg("Brikkestaving",`<p>Klipp ut brikkene. Legg ordene.</p>`+ws.map(w=>`<div class="br">${parts(w).map(p=>`<span>${esc(p)}</span>`).join("")}</div>`).join(""),ch),pg("Brikkestaving",(ws.length?ws:[""]).map((w,i)=>`<div class="bx2">${i+1}.</div>`).join(""))];
+if(n.startsWith("Silhuetter")){const bank=[...ws].sort((x,y)=>x.localeCompare(y,"nb")),ord=[...ws].sort((x,y)=>y.length-x.length||y.localeCompare(x,"nb"));return [pg("Silhuetter",`<p>Hvert ord passer i ett omriss. Skriv ordene i riktig omriss.</p>`+ord.map(sil).join("<br>")+`<p class="wb">${bank.map(esc).join("<br>")}</p>`,ch)]}
+if(n==="Hentediktat"){const ss=sents(ws).slice(0,3);return [pg("Hentediktat",`<p>Les godt. Gå til et annet bord og skriv det du husker.</p>`+(ss.length?ss:[ws.join(" ")]).map(s=>`<div class="bx">${esc(s)}</div>`).join(""),ch),pg("Hentediktat",'<div class="ln"></div>'.repeat(5))]}
+return [pg(n,card(n,ws,false),ch)]}
+function logg(){const rows=[...chosen].map((n,i)=>`<tr><td>${i?"":"Jeg har jobbet med:"}</td><td>${esc(n)}</td><td></td><td></td><td></td></tr>`).join("");
+const q=["Hvordan var det å lese teksten første gang?","Hvordan var det å lese teksten andre gang?","Fikk du nok hjelp?","Hvordan synes du at du har jobbet denne timen?"].map(x=>`<tr><td>${x}</td><td></td><td></td><td></td><td></td></tr>`).join("");
+const o=["Hvilke ord kan jeg lese bra nå?","Var det noe som var vanskelig?","Var det noe vi skulle gjort annerledes?","Har du lært noe nytt i dag?"].map(x=>`<tr><td style="width:36%">${x}</td><td></td></tr>`).join("");
+return pg("Elevlogg",`<p>Navn: ________________ &nbsp;&nbsp; Dato: __________</p><table class="gt"><tr><th></th><th></th><th>Ja</th><th>Nei</th><th>Vet ikke</th></tr>${q}</table><table class="gt" style="margin-top:16px">${o}</table>`)}
+const fors=()=>pg("Til foresatte",`<ul><li>Snakk om teksten først. Hva handler den om? Er det ord barnet må tenke ekstra på?</li><li>Barnet leser teksten høyt for en voksen, to ganger. Les gjerne stavelse for stavelse når et ord er vanskelig.</li><li>Ved dobbel konsonant deles stavelsen mellom de to konsonantene, for eksempel skum-mel.</li><li>La barnet bruke god tid, slik at alle ord blir lest riktig.</li><li>Snakk om ord som uttales annerledes enn de skrives, for eksempel ord med hj, gj, sj eller stum d.</li><li>Gjør oppgavene sammen.</li><li>Barnet leser teksten minst en gang til etter at oppgavene er gjort.</li></ul>`);
+function sheet(a,edit,title){if(!chosen.size)return"";const all=wsAll(),out=[];
+[...chosen].forEach(n=>{const ws=wsFor(n,all);out.push(...vow(n,task2(n,ws,(edit?chips(n,all):"")+(edit&&REL(n)?vtog(n):"")+(edit&&n==="Stavelsesdeling"?otog(n):"")+(edit&&n.startsWith("Silhuetter")?stog(n):""))))});
+return out.join("")}
+const swOff=new Set();
+const stog=n=>`<label class="note noprint" style="display:flex;gap:6px;align-items:center;margin:6px 0"><input type="checkbox" data-sw2="${esc(n)}" ${swOff.has(n)?"":"checked"}> Ta med ordene på elevarket</label>`;
+$("elev").addEventListener("change",e=>{const c=e.target.closest("[data-sw2]");if(!c)return;c.checked?swOff.delete(c.dataset.sw2):swOff.add(c.dataset.sw2);elev()});
+const oc=new Set();
+const otog=n=>`<label class="note noprint" style="display:flex;gap:6px;align-items:center;margin:6px 0"><input type="checkbox" data-oc="${esc(n)}" ${oc.has(n)?"checked":""}> Én kolonne for stavelsene</label>`;
+$("elev").addEventListener("change",e=>{const c=e.target.closest("[data-oc]");if(!c)return;c.checked?oc.add(c.dataset.oc):oc.delete(c.dataset.oc);elev()});
+function task2(n,ws,ch){
+if(n==="Gitter")return gitterPage(ws,ch);
+if(n.startsWith("Silhuetter")&&swOff.has(n))return task(n,ws,ch).map(p=>p.replace(/<p class="wb">[\s\S]*?<\/p>/,"").replace("Hvert ord passer i ett omriss. Skriv ordene i riktig omriss.","Læreren sier ordene. Skriv hvert ord i riktig omriss."));
+if(n==="Stavelsesdeling"&&oc.has(n))return [pg("Prikke vokaler og dele i stavelser",`<p>Prikk under vokalene. Del ordet i stavelser. Skriv stavelsene.</p><table class="gt"><tr><th>Prikke vokaler og dele i stavelser</th><th>Skrive stavelsene</th></tr>${ws.map(w=>`<tr><td>${esc(w)}</td><td></td></tr>`).join("")}</table>`,ch)];
+if(n==="Gitter"){const pat=w=>[...w].map(c=>VOW.test(c)?"v":"k"),order=[...ws].sort((x,y)=>y.length-x.length||x.localeCompare(y,"nb")),use=[];let len=0;
+order.forEach((w,i)=>{if(i%2===0&&len+w.length<=26){use.push(w);len+=w.length}});
+if(!use.length&&order.length)use.push(order[order.length-1]);
+const p=use.reverse().flatMap(pat);while(p.length<20)p.push(p.length%2?"v":"k");
+const rows=Array.from({length:8},(_,i)=>`<tr><th>${i+1}</th>${"<td></td>".repeat(p.length)}</tr>`).join("");
+return [pg("Gitter",`<p>Se om ordene kan skrives inn et sted i gitteret. Hver bokstav får en rute, og vokaler (v) og konsonanter (k) må passe. Det er ikke sikkert at alle ordene passer.</p><p>${sw([...ws].sort((x,y)=>x.localeCompare(y,"nb")))}</p><div style="overflow-x:auto"><table class="gr"><tr><th></th>${p.map(c=>`<th class="${c}">${c}</th>`).join("")}</tr>${rows}</table></div>`,ch)]}
+if(n==="Puslehistorie"){const s=sents(ws)[0]||($("txt").value.match(/[^.!?]+[.!?]*/)||[""])[0].trim();
+return [pg("Puslehistorie",`<p>Del setningen i stavelser og klipp den opp. Sorter ordene og stavelsene etter hvor de er delt. Pusle setningen sammen igjen. Prøv å huske setningen i stedet for å kopiere, og bruk originalen til slutt for å sjekke.</p><div class="bx" style="font-size:1.5rem;line-height:1.8">${esc(s)}</div><table class="gt"><tr><th>Først</th><th>Midt i</th><th>Enkeltord</th><th>Slutten</th></tr><tr><td style="height:130px"></td><td></td><td></td><td></td></tr></table>`,ch)]}
+if(n==="Sammensatte ord")return [pg("Sammensatte ord",`<p>Finn sammensatte ord i teksten. Skriv dem i tabellen og forklar ordene.</p><table class="gt"><tr><th>Ordet</th><th>Del opp ordet og forklar</th></tr>${ws.map(w=>`<tr><td>${esc(w)}</td><td></td></tr>`).join("")}</table><p style="margin-top:16px">Del ordene inn i sta-vel-ser.</p><table class="gt"><tr><th>Ordet</th><th>1. stavelse</th><th>2. stavelse</th><th>3. stavelse</th></tr>${ws.map(w=>`<tr><td>${esc(w)}</td><td></td><td></td><td></td></tr>`).join("")}</table>`,ch)];
+if(n==="Bøyingsformer, forstavelser og endelser"){const rw=()=>Array.from({length:4},()=>`<tr>${"<td></td>".repeat(4)}</tr>`).join("");return [pg(n,`<p>Ordene: ${sw(ws)}</p><p>Finn navnord (substantiv) blant ordene eller i teksten. Fyll inn bøyningene.</p><table class="gt"><tr><th colspan="2">Substantiv: Entall</th><th colspan="2">Flertall</th></tr><tr><th>Ubestemt</th><th>Bestemt</th><th>Ubestemt</th><th>Bestemt</th></tr>${rw()}</table><p style="margin-top:16px">Finn gjøreord (verb) blant ordene eller i teksten. Fyll inn bøyningene.</p><table class="gt"><tr><th>Infinitiv</th><th>Presens</th><th>Preteritum</th><th>Perfektum</th></tr>${rw()}</table>`,ch)]}
+if(n==="Setningspuslespill"){const ss=sents(ws).slice(0,2);return [pg(n,`<ul><li>Forklar hva setningen betyr.</li><li>Legg setningen på tre måter. Bruk alle ordene hver gang.</li><li>Er det noen ord som hører sammen?</li><li>Lag et spørsmål av ordene.</li></ul>`+(ss.length?ss.map(s=>`<p>${sw(s.split(/\s+/).sort((x,y)=>x.localeCompare(y,"nb")))}</p>`).join(""):'<p class="empty">Fant ingen setninger med ordene.</p>'),ch)]}
+return task(n,ws,ch)}
+const vkOff=new Set();
+const KJ2=/(ai|ei|au|øy|oi|[aeiouyæøå])/i,PRE=["mis","ut","for","opp","inn","til","gjen"];
+function syl(w){const lw=w.toLowerCase();
+for(const f of PRE){const r=lw.slice(f.length);if(lw.startsWith(f)&&r.length>=3&&KJ2.test(r))return [w.slice(0,f.length),...syl(w.slice(f.length))]}
+const p=w.split(KJ2),out=[];let nå=p[0];
+for(let i=1;i<p.length;i+=2){nå+=p[i];const k=p[i+1]||"";
+if(i+2>=p.length){nå+=k;continue}
+const u=k.match(/skj|sj|kj|gj|hj|ng|./gi)||[];let stay="",next="";
+if(u.length===1)next=u[0];else if(u.length>1){stay=u[0];next=u.slice(1).join("")}
+out.push(nå+stay);nå=next}
+out.push(nå);return out}
+const vtog=n=>`<label class="note noprint" style="display:flex;gap:6px;align-items:center;margin:6px 0"><input type="checkbox" data-vk="${esc(n)}" ${vkOff.has(n)?"":"checked"}> Ta med boks med vokalene</label>`;
+$("elev").addEventListener("change",e=>{const c=e.target.closest("[data-vk]");if(!c)return;c.checked?vkOff.delete(c.dataset.vk):vkOff.add(c.dataset.vk);elev()});
+const REL=n=>["Stavelsesdeling","Brikkestaving","Stavelseslesing","Gitter","Bruk av bokstavkort","Utforskende skriving"].includes(n)||n.startsWith("Silhuetter");
+const vow=(n,ps)=>{if(!REL(n)||vkOff.has(n)||!ps.length)return ps;const box=`<div class="al">${[..."aeiouyæøå"].map(c=>`<span class="v">${c}</span>`).join(" ")}</div>`,p=ps[0],i=p.indexOf("</h4>"),j=p.indexOf("</p>",i);ps[0]=j<0?p:p.slice(0,j+4)+box+p.slice(j+4);return ps};
+$("pll").onclick=()=>output(logg(),"Elevlogg");
+const LQ=["Hvordan var det å lese teksten første gang?","Hvordan var det å lese teksten andre gang?","Fikk du nok hjelp?","Hvordan synes du at du har jobbet denne timen?"];
+const LO=["Hvilke ord kan jeg lese bra nå?","Var det noe som var vanskelig?","Var det noe vi skulle gjort annerledes?","Har du lært noe nytt i dag?"];
+const LG=k=>k==="q"?LQ:LO;
+function logg(){const q=LQ.map(x=>`<tr><td>${esc(x)}</td><td></td><td></td><td></td></tr>`).join(""),o=LO.map(x=>`<tr><td style="width:36%">${esc(x)}</td><td></td></tr>`).join("");
+return pg("Elevlogg",`<p>Navn: ________________ &nbsp;&nbsp; Dato: __________</p>${LQ.length?`<table class="gt"><tr><th></th><th style="font-size:1.8rem;text-align:center">😊</th><th style="font-size:1.8rem;text-align:center">😞</th><th style="font-size:1.8rem;text-align:center">😐</th></tr>${q}</table>`:""}${LO.length?`<table class="gt" style="margin-top:16px">${o}</table>`:""}`)}
+function lgEd(){const row=(k,a)=>a.map((x,i)=>`<div class="lr"><input type="text" data-lk="${k}" data-i="${i}" value="${esc(x)}" aria-label="Spørsmål"><button class="chip" data-ld="${k}" data-i="${i}" aria-label="Fjern spørsmålet">×</button></div>`).join("");
+$("lgedit").innerHTML=`<h3 style="margin-top:6px">Tilpass spørsmålene</h3><p class="note">Spørsmål med Ja, Nei og Vet ikke:</p>${row("q",LQ)}<div class="lr"><input type="text" id="nq" placeholder="Nytt spørsmål"><button class="p" data-la="q">Legg til</button></div><p class="note">Spørsmål med skrivefelt:</p>${row("o",LO)}<div class="lr"><input type="text" id="no" placeholder="Nytt spørsmål"><button class="p" data-la="o">Legg til</button></div>`}
+const lgSheet=()=>{$("loggsheet").innerHTML=logg()};
+$("lgedit").addEventListener("input",e=>{const t=e.target;if(t.dataset.lk){LG(t.dataset.lk)[+t.dataset.i]=t.value;lgSheet()}});
+$("lgedit").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
+if(b.dataset.ld){LG(b.dataset.ld).splice(+b.dataset.i,1);lgEd();lgSheet()}
+if(b.dataset.la){const k=b.dataset.la,i=$(k==="q"?"nq":"no"),v=i.value.trim();if(v){LG(k).push(v);lgEd();lgSheet()}}});
+$("lgedit").addEventListener("keydown",e=>{if(e.key==="Enter"&&(e.target.id==="nq"||e.target.id==="no"))e.target.nextElementSibling.click()});
+function prAll(){const t=$("txt").value,n=t.trim().length;let h="";
+if(n){const fs=Math.max(.8,Math.min(1.25,1.25-Math.max(0,n-700)/3000));h+=`<div class="pg"><div class="tx" style="font-size:${fs}rem;line-height:1.7">${esc(t)}</div></div>`}
+h+=sheet(false,false,false)+logg();output(h,"Hele_okten")}
+$("pall").onclick=prAll;
+const gpat=ws=>{const pat=w=>[...w].map(c=>VOW.test(c)?"v":"k"),order=[...ws].sort((x,y)=>y.length-x.length||x.localeCompare(y,"nb")),use=[];let len=0;
+order.forEach((w,i)=>{if(i%2===0&&len+w.length<=26){use.push(w);len+=w.length}});
+if(!use.length&&order.length)use.push(order[order.length-1]);
+const p=use.reverse().flatMap(pat);while(p.length<20)p.push(p.length%2?"v":"k");return {p,pat}};
+const gfit=(w,p,pat)=>{const q=pat(w);for(let s=0;s+q.length<=p.length;s++)if(q.every((c,i)=>p[s+i]===c))return s;return -1};
+function fasit(n,ws){
+if(n==="Gitter")return gitterFasit(ws);
+if(n==="Stavelsesdeling"||n==="Brikkestaving")return `<table class="gt"><tr><th>Ordet</th><th>Stavelser</th></tr>${ws.map(w=>`<tr><td>${esc(w)}</td><td>${parts(w).map(esc).join(" – ")}</td></tr>`).join("")}</table>`;
+if(n.startsWith("Silhuetter")){const ord=[...ws].sort((x,y)=>y.length-x.length||y.localeCompare(x,"nb"));return ord.map(w=>`<span style="display:inline-block;text-align:center;margin-right:12px">${sil(w)}<br>${esc(w)}</span>`).join("")}
+if(n==="Gitter"){const {p,pat}=gpat(ws);return `<p>Ordene er plassert der v og k passer. Noen ord kan passe flere steder.</p><div style="overflow-x:auto"><table class="gr"><tr><th></th>${p.map(c=>`<th class="${c}">${c}</th>`).join("")}</tr>${ws.map(w=>{const s=gfit(w,p,pat);return s<0?`<tr><td colspan="${p.length+1}" style="text-align:left;padding:0 6px;width:auto">${esc(w)}: passer ikke i gitteret</td></tr>`:`<tr><th></th>${p.map((c,i)=>`<td>${i>=s&&i<s+w.length?esc([...w][i-s]):""}</td>`).join("")}</tr>`}).join("")}</table></div>`}
+if(n==="Puslehistorie"){const s=sents(ws)[0]||($("txt").value.match(/[^.!?]+[.!?]*/)||[""])[0].trim(),F=[],M=[],E=[],S=[];
+(s.match(/\p{L}+/gu)||[]).forEach(w=>{const a=parts(w).map(x=>x.toLowerCase());if(a.length===1)E.push(a[0]);else{F.push(a[0]+"-");S.push("-"+a[a.length-1]);a.slice(1,-1).forEach(x=>M.push("-"+x+"-"))}});
+const hy=s.replace(/\p{L}+/gu,w=>parts(w).join("-"));
+return `<p>${esc(hy)}</p><table class="gt"><tr><th>Først</th><th>Midt i</th><th>Enkeltord</th><th>Slutten</th></tr><tr><td>${F.join("<br>")}</td><td>${M.join("<br>")}</td><td>${E.join("<br>")}</td><td>${S.join("<br>")}</td></tr></table>`}
+if(n==="Setningspuslespill"){const ss=sents(ws).slice(0,2);return (ss.length?ss.map(s=>`<p>${esc(s)}</p>`).join(""):"")+'<p class="note">Flere riktige løsninger er mulige.</p>'}
+if(n==="Hentediktat"){const ss=sents(ws).slice(0,3);return (ss.length?ss:[ws.join(" ")]).map(s=>`<p>${esc(s)}</p>`).join("")}
+if(n==="Finne felles førstelyd"){const g={};ws.forEach(w=>(g[w[0]]=g[w[0]]||[]).push(w));return '<p class="note">Gruppert etter første bokstav. Sjekk lyden, for eksempel ved sj, kj og skj.</p>'+Object.values(g).map(x=>`<p>${sw(x)}</p>`).join("")}
+if(n==="Bruk av bokstavkort")return `<p>${sw(ws)}</p>`;
+if(n==="Utforskende skriving")return ws.map((w,i)=>`<p>${i+1}. ${esc(w)}</p>`).join("");
+if(n==="Arbeid med ords betydning")return ws.map(w=>`<p><b>${esc(w)}</b>: åpent svar.${ctx(w)?` I teksten: «${esc(ctx(w))}»`:""}</p>`).join("");
+if(n==="Sammensatte ord")return `<p>${esc(HINT[n])}</p><table class="gt"><tr><th>Ordet</th><th>Stavelser</th></tr>${ws.map(w=>`<tr><td>${esc(w)}</td><td>${parts(w).map(esc).join(" – ")}</td></tr>`).join("")}</table>`;
+if(HINT[n])return `<p>${esc(HINT[n])}</p>`;
+if(n==="Bøyingsformer, forstavelser og endelser")return '<p>Åpent svar. Sjekk bøyningene i ordbok eller grammatikk.</p>';
+return '<p>Ingen fasit: gjennomføres sammen med eleven.</p>'}
+function tlogg(){const ls=[...document.querySelectorAll("#s4 label")],lead=document.querySelector("#s4 .lead");
+return `<div style="break-before:page"><h2>Lærerlogg</h2><p class="note">${esc(lead?lead.textContent:"")}</p>`+ls.map(l=>{const t=l.querySelector("textarea");return `<div class="tk"><h4>${esc(l.firstChild.textContent.trim())}</h4><div style="min-height:110px;white-space:pre-wrap">${esc(t?t.value:"")}</div></div>`}).join("")+`</div>`}
+function prFasit(){const h=$("hnote"),old="Velg «Lagre som PDF» som skriver.";
+if(!chosen.size){h.textContent="Velg oppgaver i Fase B først.";setTimeout(()=>h.textContent=old,2500);return}
+const all=wsAll();$("printarea").innerHTML=`<h2>Fasit</h2>`+[...chosen].map((n,i)=>`<div class="tk"><h4>Oppgave ${i+1}: ${esc(n)}</h4>${fasit(n,wsFor(n,all))}</div>`).join("");
+document.body.classList.add("pm");print()}
+$("pfa").onclick=prLaerer;$("pfa2").onclick=prLaerer;
+function gridsOf(ws){const pat=w=>[...w].map(c=>VOW.test(c)?"v":"k"),CAP=16,nofit=[],bins=[];
+[...ws].sort((x,y)=>y.length-x.length||x.localeCompare(y,"nb")).forEach(w=>{if(w.length>CAP){nofit.push(w);return}
+const b=bins.find(b=>b.len+w.length<=CAP);if(b){b.words.push(w);b.len+=w.length}else bins.push({words:[w],len:w.length})});
+return {grids:bins.map(b=>({words:b.words,p:b.words.flatMap(pat)})),nofit,pat}}
+function gitterPage(ws,ch){const {grids,nofit}=gridsOf(ws),tot=ws.length,fit=tot-nofit.length;
+const warn=ch&&nofit.length?`<p class="noprint" style="color:#b3261e;font-weight:700;margin:6px 0">Obs: ${nofit.length} av ${tot} ord passer ikke i gittrene og er ikke med: ${nofit.map(esc).join(", ")}. ${Math.round(100*fit/tot)} % av ordene er med.</p>`:"";
+const bank=sw(grids.flatMap(g=>g.words).sort((x,y)=>x.localeCompare(y,"nb")));
+const tbl=g=>{const rows=Array.from({length:Math.max(4,g.words.length+2)},(_,i)=>`<tr><th>${i+1}</th>${"<td></td>".repeat(g.p.length)}</tr>`).join("");return `<div style="overflow-x:auto;margin-bottom:14px;break-inside:avoid"><table class="gr"><tr><th></th>${g.p.map(c=>`<th class="${c}">${c}</th>`).join("")}</tr>${rows}</table></div>`};
+return [pg("Gitter",`<p>Se om ordene kan skrives inn et sted i gitteret. Hver bokstav får en rute, og vokaler (v) og konsonanter (k) må passe. Hvert ord passer i minst ett av gittrene.</p><p>${bank}</p>`+(grids.length?grids.map(tbl).join(""):'<p class="empty">Ingen ord å lage gitter av.</p>'),warn+ch)]}
+function gitterFasit(ws){const {grids,nofit,pat}=gridsOf(ws);
+const one=g=>`<div style="overflow-x:auto;margin-bottom:12px;break-inside:avoid"><table class="gr"><tr><th></th>${g.p.map(c=>`<th class="${c}">${c}</th>`).join("")}</tr>${g.words.map(w=>{const s=gfit(w,g.p,pat);return `<tr><th></th>${g.p.map((c,i)=>`<td>${i>=s&&i<s+w.length?esc([...w][i-s]):""}</td>`).join("")}</tr>`}).join("")}</table></div>`;
+return `<p>Hvert ord er plassert der v og k passer. Noen ord kan passe flere steder.</p>`+grids.map(one).join("")+(nofit.length?`<p class="note">Ikke med i gittrene: ${nofit.map(esc).join(", ")}</p>`:"")}
+const gcache={};
+function bestGrid(ws){const pat=w=>[...w].map(c=>VOW.test(c)?"v":"k").join(""),CAP=16,info=ws.map(w=>({w,p:pat(w)})),cand=info.filter(x=>x.p.length<=CAP);
+if(!cand.length)return {p:[],fit:[],nofit:ws.slice()};
+const key=cand.map(x=>x.p).sort().join(",");let bp=gcache[key];
+if(!bp){const wt={};cand.forEach(x=>wt[x.p]=(wt[x.p]||0)+1);const ps=Object.keys(wt);let bc=-1;
+for(let m=0;m<(1<<CAP);m++){let s="";for(let i=0;i<CAP;i++)s+=(m>>i&1)?"v":"k";let c=0;for(const q of ps)if(s.includes(q))c+=wt[q];if(c>bc){bc=c;bp=s}}
+gcache[key]=bp}
+const ok=x=>x.p.length<=CAP&&bp.includes(x.p),fit=info.filter(ok).map(x=>({w:x.w,o:bp.indexOf(x.p),l:x.p.length})),nofit=info.filter(x=>!ok(x)).map(x=>x.w);
+if(!fit.length)return {p:[],fit,nofit};
+const a=Math.min(...fit.map(f=>f.o)),b=Math.max(...fit.map(f=>f.o+f.l));
+return {p:[...bp.slice(a,b)],fit:fit.map(f=>({w:f.w,o:f.o-a})),nofit}}
+function gitterPage(ws,ch){const g=bestGrid(ws),tot=ws.length,pct=tot?Math.round(100*g.fit.length/tot):0;
+const warn=ch&&g.nofit.length?`<p class="noprint" style="color:#b3261e;font-weight:700;margin:6px 0">Obs: ${g.nofit.length} av ${tot} ord passer ikke i gitteret og er ikke med: ${g.nofit.map(esc).join(", ")}. ${pct} % av ordene er med.</p>`:"";
+const rows=Array.from({length:Math.min(14,Math.max(6,g.fit.length+2))},(_,i)=>`<tr><th>${i+1}</th>${"<td></td>".repeat(g.p.length)}</tr>`).join("");
+const bank=sw(g.fit.map(f=>f.w).sort((x,y)=>x.localeCompare(y,"nb")));
+return [pg("Gitter",`<p>Sett ordene inn i gitteret. Hver bokstav får en rute, og vokaler (v) og konsonanter (k) må passe.</p><p>${bank}</p>`+(g.p.length?`<div style="overflow-x:auto"><table class="gr"><tr><th></th>${g.p.map(c=>`<th class="${c}">${c}</th>`).join("")}</tr>${rows}</table></div>`:'<p class="empty">Ingen ord å lage gitter av.</p>'),warn+ch)]}
+function gitterFasit(ws){const g=bestGrid(ws);
+return `<p>Hvert ord er plassert der v og k passer. Noen ord kan passe flere steder.</p>`+(g.p.length?`<div style="overflow-x:auto"><table class="gr"><tr><th></th>${g.p.map(c=>`<th class="${c}">${c}</th>`).join("")}</tr>${g.fit.map(f=>`<tr><th></th>${g.p.map((c,i)=>`<td>${i>=f.o&&i<f.o+f.w.length?esc([...f.w][i-f.o]):""}</td>`).join("")}</tr>`).join("")}</table></div>`:"")+(g.nofit.length?`<p class="note">Ikke med i gitteret: ${g.nofit.map(esc).join(", ")}</p>`:"")}
+function prLaerer(){const t=$("txt").value,n=t.trim().length,fs=Math.max(.75,Math.min(1.1,1.1-Math.max(0,n-700)/3500));
+const info=[...document.querySelectorAll("#s1 ul.c")].map(u=>`<h3 style="margin:10px 0 4px">${esc(u.previousElementSibling?u.previousElementSibling.textContent:"")}</h3><ul style="list-style:disc;padding-left:1.3em;margin:4px 0">${u.innerHTML}</ul>`).join("");
+const lead=document.querySelector("#s1 .lead");
+let h=`<div class="pg"><h4>Lærerark: Fase A</h4>${lead?`<p class="note">${esc(lead.textContent)}</p>`:""}${info}<h3 style="margin:14px 0 4px">Observasjoner</h3><div style="min-height:90px;border:1px solid #999;padding:6px;white-space:pre-wrap"></div>`+(n?`<h3 style="margin:14px 0 4px">Eleven leser og du noterer elevens lesefeil</h3><div class="tx" style="font-size:${fs}rem;line-height:1.6">${esc(t)}</div>`:"")+`</div>`;
+const all=wsAll();
+if(chosen.size)h+=`<div><h2>Oppgaver med fasit</h2>`+[...chosen].map((c,i)=>`<div class="tk"><h4>Oppgave ${i+1}: ${esc(c)}</h4>${fasit(c,wsFor(c,all))}</div>`).join("")+`</div>`;
+h+=`<div style="break-before:page">${logg()}</div>`+tlogg();
+output(h,"Laererark")}
+const LL=["Hvilke aktiviteter ble det jobbet med, og hva skulle eleven lære?","Hvilke strategier brukte eleven?","Hva gjorde jeg som hjalp eleven å lykkes?","Hva skjedde da eleven ikke lyktes, og hva gjorde vi da?","Hva ble hovedpunktene i loggsamtalen?"];
+function lgPage(){return pg("Lærerlogg",`<p class="note">Noter planlagt og utført arbeid i stikkordsform, sammen med opplevelser og erfaringer.</p>`+LL.map(q=>`<div class="tk"><h4 style="font-size:.95rem;margin:0 0 4px">${esc(q)}</h4><div style="min-height:110px"></div></div>`).join(""))}
+function tlogg(){return `<div style="break-before:page">${lgPage()}</div>`}
+$("lsheet").innerHTML=lgPage();
+$("plg").onclick=()=>output(lgPage(),"Laererlogg");
+function crc32(b){let t=crc32.t;if(!t){t=crc32.t=[];for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}}let r=0xFFFFFFFF;for(let i=0;i<b.length;i++)r=t[(r^b[i])&255]^(r>>>8);return (r^0xFFFFFFFF)>>>0}
+function zipStore(files){const enc=new TextEncoder(),parts=[],cd=[];let off=0;
+files.forEach(([name,str])=>{const nb=enc.encode(name),db=enc.encode(str),crc=crc32(db),lh=new DataView(new ArrayBuffer(30));
+lh.setUint32(0,0x04034b50,true);lh.setUint16(4,20,true);lh.setUint16(6,0x0800,true);lh.setUint16(12,0x21,true);lh.setUint32(14,crc,true);lh.setUint32(18,db.length,true);lh.setUint32(22,db.length,true);lh.setUint16(26,nb.length,true);
+parts.push(new Uint8Array(lh.buffer),nb,db);
+const ch=new DataView(new ArrayBuffer(46));ch.setUint32(0,0x02014b50,true);ch.setUint16(4,20,true);ch.setUint16(6,20,true);ch.setUint16(8,0x0800,true);ch.setUint16(14,0x21,true);ch.setUint32(16,crc,true);ch.setUint32(20,db.length,true);ch.setUint32(24,db.length,true);ch.setUint16(28,nb.length,true);ch.setUint32(42,off,true);
+cd.push(new Uint8Array(ch.buffer),nb);off+=30+nb.length+db.length});
+const cdl=cd.reduce((a,x)=>a+x.length,0),e=new DataView(new ArrayBuffer(22));e.setUint32(0,0x06054b50,true);e.setUint16(8,files.length,true);e.setUint16(10,files.length,true);e.setUint32(12,cdl,true);e.setUint32(16,off,true);
+return new Blob([...parts,...cd,new Uint8Array(e.buffer)],{type:"application/vnd.openxmlformats-officedocument.wordprocessingml.document"})}
+function wx(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
+let PB=false;
+const BR_="<w:r><w:br/></w:r>";
+function wr(t,o){let r="";if(o.b)r+="<w:b/>";if(o.c)r+=`<w:color w:val="${o.c}"/>`;if(o.sz)r+=`<w:sz w:val="${o.sz}"/>`;if(o.box)r+='<w:bdr w:val="single" w:sz="8" w:space="1" w:color="F2B705"/>';return `<w:r>${r?`<w:rPr>${r}</w:rPr>`:""}<w:t xml:space="preserve">${wx(t)}</w:t></w:r>`}
+function rt(s,o){return s.split("\n").map((l,i)=>(i?BR_:"")+(l?wr(l,o):"")).join("")}
+function wo(el,o){o=Object.assign({},o);const c=el.classList,t=el.tagName;if(/^(H[1-6]|TH|B|STRONG)$/.test(t))o.b=1;if(c.contains("v")){o.c="D62828";o.b=1}if(c.contains("k")){o.c="1F6FD1";o.b=1}if(c.contains("note"))o.c="555555";if(c.contains("sp")||c.contains("lt"))o.box=1;if(c.contains("lt"))o.b=1;return o}
+function runs(n,o){let x="";n.childNodes.forEach(c=>{if(c.nodeType===3)x+=rt(o.pre?c.textContent:c.textContent.replace(/\s+/g," "),o);else if(c.nodeType===1){if(c.tagName==="BR")x+=BR_;else{x+=runs(c,wo(c,o));if(c.classList.contains("sp")||c.classList.contains("lt"))x+=wr("  ",o)}}});return x}
+function para(rx,p){p=p||{};let x="<w:pPr>";if(PB){x+="<w:pageBreakBefore/>";PB=false}if(p.bd)x+='<w:pBdr><w:bottom w:val="single" w:sz="8" w:space="1" w:color="333333"/></w:pBdr>';x+=`<w:spacing w:before="${p.sb||0}" w:after="${p.sa==null?120:p.sa}"/>`;if(p.ind)x+=`<w:ind w:left="${p.ind}" w:hanging="${p.hang||0}"/>`;if(p.jc)x+=`<w:jc w:val="${p.jc}"/>`;return `<w:p>${x}</w:pPr>${rx||""}</w:p>`}
+const BDR=(col,sz)=>["top","left","bottom","right"].map(k=>`<w:${k} w:val="single" w:sz="${sz}" w:space="0" w:color="${col}"/>`).join("");
+function cellBox(inner,h,col){return `<w:tbl><w:tblPr><w:tblW w:w="5000" w:type="pct"/><w:tblBorders>${BDR(col,16)}</w:tblBorders></w:tblPr><w:tblGrid><w:gridCol w:w="9000"/></w:tblGrid><w:tr>${h?`<w:trPr><w:trHeight w:val="${h}" w:hRule="atLeast"/></w:trPr>`:""}<w:tc><w:tcPr><w:tcW w:w="5000" w:type="pct"/></w:tcPr>${inner||para("")}</w:tc></w:tr></w:tbl>`+para("",{sa:60})}
+function silT(s){const L=[...s.querySelectorAll("i")].map(i=>{const mt=parseInt(i.style.marginTop)||0,h=parseInt(i.style.height)||26;return mt===0?"a":h>30?"d":"x"}),H=[220,380,220],W=420,bx=BDR("333333",12);
+const cell=(k,r)=>{const on=(k==="a"&&r<2)||(k==="x"&&r===1)||(k==="d"&&r>0);let vm="";if(k==="a"&&r<2)vm=r===0?'<w:vMerge w:val="restart"/>':"<w:vMerge/>";if(k==="d"&&r>0)vm=r===1?'<w:vMerge w:val="restart"/>':"<w:vMerge/>";return `<w:tc><w:tcPr><w:tcW w:w="${W}" w:type="dxa"/>${vm}${on?`<w:tcBorders>${bx}</w:tcBorders>`:""}</w:tcPr>${para("",{sa:0})}</w:tc>`};
+return `<w:tbl><w:tblPr><w:tblW w:w="${W*L.length}" w:type="dxa"/><w:tblLayout w:type="fixed"/></w:tblPr><w:tblGrid>${`<w:gridCol w:w="${W}"/>`.repeat(L.length)}</w:tblGrid>${[0,1,2].map(r=>`<w:tr><w:trPr><w:trHeight w:val="${H[r]}" w:hRule="exact"/></w:trPr>${L.map(k=>cell(k,r)).join("")}</w:tr>`).join("")}</w:tbl>`}
+function tbl(t){const gr=t.classList.contains("gr"),rows=[...t.querySelectorAll("tr")];if(!rows.length)return "";
+const nc=Math.max(...rows.map(r=>[...r.children].reduce((a,x)=>a+(+x.getAttribute("colspan")||1),0))),cw=gr?420:Math.floor(9000/nc);
+let x=`<w:tbl><w:tblPr><w:tblW w:w="${gr?cw*nc:5000}" w:type="${gr?"dxa":"pct"}"/><w:tblBorders>${BDR("333333",6)}<w:insideH w:val="single" w:sz="6" w:space="0" w:color="333333"/><w:insideV w:val="single" w:sz="6" w:space="0" w:color="333333"/></w:tblBorders><w:tblLayout w:type="fixed"/></w:tblPr><w:tblGrid>${`<w:gridCol w:w="${cw}"/>`.repeat(nc)}</w:tblGrid>`;
+rows.forEach(r=>{x+=`<w:tr><w:trPr><w:trHeight w:val="${gr?440:700}" w:hRule="atLeast"/></w:trPr>`;
+[...r.children].forEach(td=>{const cs=+td.getAttribute("colspan")||1,th=td.tagName==="TH",hd=th&&!gr;const o=hd?{b:1,c:"2B1D00"}:{};
+x+=`<w:tc><w:tcPr><w:tcW w:w="${cw*cs}" w:type="dxa"/>${cs>1?`<w:gridSpan w:val="${cs}"/>`:""}${hd?'<w:shd w:val="clear" w:color="auto" w:fill="FFD23F"/>':""}</w:tcPr>${para(runs(td,wo(td,o)),{sa:0,jc:(gr||th)?"center":""})}</w:tc>`});
+x+="</w:tr>"});return x+"</w:tbl>"+para("",{sa:60})}
+function blk(c,o){const t=c.tagName,cl=c.classList,st=c.getAttribute("style")||"";
+if(/break-before:\s*page/.test(st))PB=true;
+if(cl.contains("pg")){const r=blocks(c,o);PB=true;return r}
+if(cl.contains("bx")||cl.contains("bx2")||cl.contains("tk")||cl.contains("al")){const big=cl.contains("bx")||cl.contains("bx2"),oo=Object.assign({},o,big?{sz:36}:cl.contains("al")?{sz:32}:{});if(cl.contains("bx2"))oo.b=1;return cellBox(blocks(c,oo),cl.contains("bx2")?2200:cl.contains("bx")?1600:0,(cl.contains("tk")||cl.contains("al"))?"999999":"F2B705")}
+if(cl.contains("ln"))return para("",{bd:1,sb:420,sa:0});
+const mh=/min-height:\s*(\d+)px/.exec(st);if(mh&&!cl.contains("tx")){if(/border/.test(st))return cellBox(blocks(c,o),+mh[1]*9,"999999");return blocks(c,o)+para("",{sa:+mh[1]*9})}
+if(cl.contains("tx"))return para(rt(c.textContent,Object.assign({},o,{sz:22})));
+if(cl.contains("br"))return para([...c.children].map(s=>wr(s.textContent,{box:1,sz:40,b:1})+wr("  ",{sz:40})).join(""),{sa:240});
+if(t==="UL"||t==="OL")return [...c.children].map(li=>para(wr("\u2022 ",o)+runs(li,o),{ind:360,hang:240,sa:60})).join("");
+if(t==="TABLE")return tbl(c);
+if(t==="P")return para(runs(c,wo(c,o)));
+if(/^H[1-6]$/.test(t)){const sz=t==="H2"?36:t==="H3"?28:(c.closest(".tk")?22:30);return para(runs(c,Object.assign(wo(c,o),{sz})),{sb:t==="H3"?120:0,sa:100})}
+return blocks(c,o)}
+function blocks(n,o){o=o||{};let x="",pend="";const flush=()=>{if(pend){x+=para(pend)}pend=""};
+n.childNodes.forEach(c=>{
+if(c.nodeType===3){const s=c.textContent.replace(/\s+/g," ");if(s.trim()||pend)pend+=rt(s,o);return}
+if(c.nodeType!==1)return;const t=c.tagName,cl=c.classList;
+if(cl.contains("noprint"))return;
+if(t==="BR"){if(pend)pend+=BR_;return}
+const sil=cl.contains("sil")?c:(t==="SPAN"&&c.querySelector(".sil"));
+if(sil){flush();x+=silT(sil)+para("",{sa:60});if(c!==sil){const w=[...c.childNodes].filter(k=>k.nodeType===3).map(k=>k.textContent).join("").trim();if(w)x+=para(wr(w,o))}return}
+if(/^(DIV|P|H[1-6]|UL|OL|TABLE)$/.test(t)){flush();x+=blk(c,o);return}
+pend+=runs(c,wo(c,o))});
+flush();return x}
+function makeDocx(html){const W="http://schemas.openxmlformats.org/wordprocessingml/2006/main",R="http://schemas.openxmlformats.org/officeDocument/2006/relationships",X='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
+PB=false;const body=blocks(new DOMParser().parseFromString("<body>"+html+"</body>","text/html").body,{});
+return zipStore([
+["[Content_Types].xml",X+'<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/></Types>'],
+["_rels/.rels",X+'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="'+R+'/officeDocument" Target="word/document.xml"/></Relationships>'],
+["word/document.xml",X+'<w:document xmlns:w="'+W+'" xmlns:r="'+R+'"><w:body>'+body+'<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1000" w:right="1000" w:bottom="1000" w:left="1000" w:header="708" w:footer="708" w:gutter="0"/></w:sectPr></w:body></w:document>'],
+["word/_rels/document.xml.rels",X+'<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="'+R+'/styles" Target="styles.xml"/></Relationships>'],
+["word/styles.xml",X+'<w:styles xmlns:w="'+W+'"><w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:ascii="Calibri" w:hAnsi="Calibri" w:cs="Calibri"/><w:sz w:val="24"/><w:lang w:val="nb-NO"/></w:rPr></w:rPrDefault><w:pPrDefault><w:pPr><w:spacing w:after="120" w:line="276" w:lineRule="auto"/></w:pPr></w:pPrDefault></w:docDefaults></w:styles>']])}
+async function saveWord(html,name){const hn=$("hnote");let blob;try{blob=makeDocx(html)}catch(e){hn.textContent="Kunne ikke lage Word-filen.";return}
+const fn=name+".docx";let d=null;try{d=window.claude?await claude.use("downloads"):null}catch(e){}
+if(d){try{await d.save({filename:fn,data:blob})}catch(e){if(!e||e.code!=="declined")hn.textContent="Kunne ikke laste ned filen."}return}
+const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=fn;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},2000)}
+function output(html,name){const f=document.querySelector("input[name=fmt]:checked");if(f&&f.value==="word"){saveWord(html,name);return}$("printarea").innerHTML=html;document.body.classList.add("pm");print()}
+document.querySelectorAll("input[name=fmt]").forEach(r=>{r.onchange=()=>{$("hnote").textContent=document.querySelector("input[name=fmt]:checked").value==="word"?"Word-filen lastes ned til maskinen din.":"Velg \u00abLagre som PDF\u00bb som skriver."}});
+lgEd();
+go(0);rec();chosenUI();
+</script>
+</body>
+</html>
